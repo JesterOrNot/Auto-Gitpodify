@@ -2,4 +2,4 @@ tasks:
   - init: |
       go get -v ./...
       go install
-    command: gitpodify -h
+    command: gitpodify github.com/JesterOrNot/Auto-Gitpodify
