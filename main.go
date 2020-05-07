@@ -32,7 +32,7 @@ func main() {
 func info() {
 	app.Name = "gitpodify"
 	app.Description = "Takes a URL of a Gitpod repo, and Gitpodifies it."
-	app.Usage = "gitpodify [options] username reponame branch"
+	app.Usage = "gitpodify [options] 8rl"
 	app.Author = "Sean Hellum"
 	app.Version = "1.0.0"
 	app.Action = runApp
