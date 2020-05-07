@@ -1,34 +1,28 @@
 package main
 
 import (
-	"os"
+	"errors"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"regexp"
 
 	"github.com/urfave/cli"
 )
 
 func App(c *cli.Context) {
-	username := c.Args().Get(0)
-	if username == "" {
-		log.Fatal("Error!")
-		os.Exit(1)
+	url := c.Args().First()
+	err := validateURL(url)
+	if err != nil {
+		log.Fatal("Error Invalid URL")
 	}
-	repoName := c.Args().Get(1)
-	if repoName == "" {
-		log.Fatal("Error!")
-		os.Exit(1)
-	}
-	branch := c.Args().Get(2)
-	if branch == "" {
-		branch = "master"
-	}
-	repo := newRepo(username, c.Args().Get(1), branch)
-	// fmt.Println(repo)
-	// fmt.Println("repoName:", repoName, "branch:", branch, "org:", username)
+	details := extractDetailsFromURL(url)
+	username := details[0]
+	repoName := details[1]
+	branch := details[2]
+	repo := newRepo(username, repoName, branch)
 	files := GetFiles(repo)
 	for i := 0; i < len(files); i++ {
 		fmt.Println(files[i])
@@ -58,4 +52,27 @@ func isFile(file GitFile) bool {
 		return false
 	}
 	return true
+}
+
+func extractDetailsFromURL(url string) []string {
+	regex := `(?:https?:\/\/)?github\.com\/([^\s\/]+)\/([^\s\/]+)(?:\/tree\/?)?([^\s\/]+)?\/?`
+	compiledRegex := regexp.MustCompile(regex)
+	var result []string
+	for _, i := range compiledRegex.FindStringSubmatch(url)[1:] {
+		if i != "" && i != "/" {
+			result = append(result, i)
+		} else {
+			result = append(result, "master")
+		}
+	}
+	return result
+}
+
+func validateURL(url string) error {
+	regex := `(?:https?:\/\/)?github\.com\/([^\s\/]+)\/([^\s\/]+)(?:\/tree\/?)?([^\s\/]+)?\/?`
+	compiledRegex := regexp.MustCompile(regex)
+	if !compiledRegex.MatchString(url) {
+		return errors.New("Invalid URL")
+	}
+	return nil
 }
