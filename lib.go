@@ -13,6 +13,7 @@ import (
 )
 
 func App(c *cli.Context) {
+	fmt.Println(Languages)
 	url := c.Args().First()
 	err := validateURL(url)
 	if err != nil {
@@ -24,6 +25,7 @@ func App(c *cli.Context) {
 	branch := details[2]
 	repo := newRepo(username, repoName, branch)
 	files := GetFiles(repo)
+	checkAll(files)
 	for i := 0; i < len(files); i++ {
 		fmt.Println(files[i])
 	}
