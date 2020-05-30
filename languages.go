@@ -1,11 +1,12 @@
 package main
 
 func CheckAll(files []string) {
-	waitGroup.Add(4)
+	waitGroup.Add(5)
 	go makeChecker("go.mod", "go")(files)
 	go makeChecker("Cargo.toml", "rust")(files)
 	go makeChecker("yarn.lock", "yarn")(files)
 	go makeChecker("package.json", "npm")(files)
+	go makeChecker("Makefile", "make")(files)
 	waitGroup.Wait()
 }
 

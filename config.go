@@ -25,6 +25,8 @@ func addTasks(config *os.File) {
 				config.WriteString("  - name: Yarn\n    init: yarn install\n")
 			} else if i == "npm" {
 				config.WriteString("  - name: npm\n    init: npm install\n")
+			} else if i == "make" {
+				config.WriteString("  - name: Make\n    init: make")
 			}
 		}
 	}
