@@ -23,6 +23,8 @@ func addTasks(config *os.File) {
 				config.WriteString("  - name: Rust\n    init: cargo build\n")
 			} else if i == "yarn" {
 				config.WriteString("  - name: Yarn\n    init: yarn install\n")
+			} else if i == "npm" {
+				config.WriteString("  - name: npm\n    init: npm install\n")
 			}
 		}
 	}
