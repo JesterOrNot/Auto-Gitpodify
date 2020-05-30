@@ -18,7 +18,7 @@ func addTasks(config *os.File) {
 		config.WriteString("tasks:\n")
 		for _, i := range Languages {
 			if i == "go" {
-				config.WriteString("  - name: Go\n    init: go get -v -t -d ./...\n")
+				config.WriteString("  - name: Go\n    init: go get && go build ./... && go test ./...\n    command: go run\n")
 			} else if i == "rust" {
 				config.WriteString("  - name: Rust\n    init: cargo build\n")
 			} else if i == "yarn" {
